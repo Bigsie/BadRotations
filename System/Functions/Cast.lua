@@ -527,7 +527,7 @@ function isCasting(SpellID,Unit)
 		return false
 	end
 end
--- if isCastingSpell(12345) == true then
+-- if isUnitCasting("target") == true then
 function isUnitCasting(unit)
 	if unit == nil then unit = "player" end
 	local spellCasting = UnitCastingInfo(unit)
@@ -584,7 +584,7 @@ function createCastFunction(thisUnit,debug,minUnits,effectRng,spellID,index,pred
 	local function castingSpell(thisUnit,spellID,spellName,icon)
 		botCast = true -- Used by old Queue Cast
 		botSpell = spellID -- Used by old Queue Cast
-		CastSpellByName(spellName,thisUnit)
+		CastSpellByID(spellID,thisUnit)
 		if IsAoEPending() then
 			local X,Y,Z = ObjectPosition(thisUnit)
 			ClickPosition(X,Y,Z)

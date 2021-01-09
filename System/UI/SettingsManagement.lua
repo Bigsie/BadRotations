@@ -65,7 +65,7 @@ function br:loadSettings(folder,class,spec,profile)
             if profileFound then br.profile = deepcopy(brprofile) end
             Print("Loaded Settings for Profile "..profile)
         end
-        if not fileFound then 
+        if not fileFound then
             Print("No File Called 'savedSettings.lua' Found In "..loadDir)
         end
 		if spec == nil then spec = br.selectedSpec end

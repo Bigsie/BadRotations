@@ -937,7 +937,7 @@ function br.store(key, value)
 	br.profile[key] = value
 	return true
   end
-  
+
   function br.fetch(key, default)
 	if br.profile == nil then
 		br.profile = {}
@@ -956,4 +956,13 @@ function br.sanguineCheck(unit)
 		end
 	end
 	return false
+end
+
+function isTableEmpty(table)
+	if table == nil then return true end
+	local retval = true
+	if next(table) ~= nil then
+		retval = false
+	end
+	return retval
 end

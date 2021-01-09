@@ -48,9 +48,6 @@ function br.ui:createConfigWindow()
         br.ui:createCheckbox(section, "Skull First", "Check to enable focus skull dynamically.")
         br.ui:createCheckbox(section, "Dispel Only Whitelist", "Check to only dispel debuffs listed on the whitelist.")
         br.ui:createCheckbox(section, "Purge Only Whitelist", "Check to only purge buffs listed on the whitelist.")
-        br.ui:createCheckbox(section, "Interrupt Only Whitelist", "Check to only interrupt casts listed on the whitelist.")
-        br.ui:createDropdownWithout(section, "Interrupt Target", {"All", "Target", "Focus", "Marked"},  1, "Interrupt target settings.")
-        br.ui:createDropdownWithout(section, "Interrupt Mark", {"|cffffff00Star", "|cffffa500Circle", "|cff800080Diamond", "|cff008000Triangle", "|cffffffffMoon", "|cff0000ffSquare", "|cffff0000Cross", "|cffffffffSkull"},  8, "Mark to interrupt if Marked is selected in Interrupt Target.")
         br.ui:createCheckbox(section, "Only Known Units", "Check this to interrupt only on known units using whitelist.")
         br.ui:createCheckbox(section, "Crowd Control", "Check to use crowd controls on select units/buffs.")
         br.ui:createCheckbox(section, "Enrages Handler", "Check this to allow Enrages Handler.")
@@ -83,7 +80,6 @@ function br.ui:createConfigWindow()
         section = br.ui:createSection(br.ui.window.config, "Other Features")
         --br.ui:createCheckbox(section, "PokeRotation")
         --br.ui:createCheckbox(section, "Bypass Flying Check")
-        br.ui:createCheckbox(section, "Pig Catcher", "Catch pig in Ring of Booty")
         br.ui:createSpinner(section, "Profession Helper", 0.5, 0, 1, 0.1, "Check to enable Professions Helper.", "Set Desired Recast Delay.")
         br.ui:createDropdown(section, "Prospect Ores", {"SL","BFA","Legion","WoD", "MoP", "Cata", "All"}, 1, "Prospect Desired Ores. Profession Helper must be checked.")
         br.ui:createDropdown(section, "Mill Herbs", {"SL","BFA","Legion","WoD", "MoP", "Cata", "All"}, 1, "Mill Desired Herbs. Profession Helper must be checked.")
@@ -94,11 +90,36 @@ function br.ui:createConfigWindow()
         br.ui:createCheckbox(section, "Fish Oil", "Turn Fish into Aromatic Fish Oil. Profession Helper must be checked.")
         br.ui:createDropdown(section, "Bait", {"Lost Sole Bait","Silvergill Pike Bait","Pocked Bonefish Bait","Iridescent Amberjack Bait", "Spinefin Piranha Bait", "Elysian Thade Bait"}, 1, "Using the bait.")
         br.ui:createDropdown(section, "Anti-Afk", {"Enabled","Disabled"}, 2, "Turn EWT Anti-Afk On/Off")
-        br.ui:createCheckbox(section, "Quaking Helper", "Auto cancel channeling and block casts during mythic+ affix quaking")
         br.ui:createCheckbox(section, "Debug Timers", "Useless to users, for Devs.")
         br.ui:createCheckbox(section, "Cache Debuffs", "Experimental feature still in testing")
         br.ui:createCheckbox(section, "Unit ID In Tooltip", "Show/Hide Unit IDs in Tooltip")
         --br.ui:createCheckbox(section, "Show Drawings", "Show drawings on screen using Lib Draw")
+        br.ui:checkSectionState(section)
+    end
+
+    local function callInterruptEngine()
+        -- Interrupt Engine
+        section = br.ui:createSection(br.ui.window.config, "Interrupt Engine")
+        br.ui:createCheckbox(section,"IE Active", "Uncheck to disable Interrupt Engine.")
+        br.ui:createCheckbox(section,"Include BR Whitelist", "Include BadRotations common whitelist in common interrupt pool")
+        br.ui:createCheckbox(section,"Include Profile Whitelist", "Include profile whitelist in common interrupt pool")
+        br.ui:createCheckbox(section,"Include Personal Whitelist", "Include personal whitelist in common interrupt pool")
+        br.ui:createDropdownWithout(section, "Interrupt Target", {"All", "Target", "Focus", "Marked"},  1, "Interrupt target settings.")
+        br.ui:createDropdownWithout(section, "Interrupt Mark", {"|cffffff00Star", "|cffffa500Circle", "|cff800080Diamond", "|cff008000Triangle", "|cffffffffMoon", "|cff0000ffSquare", "|cffff0000Cross", "|cffffffffSkull"},  8, "Mark to interrupt if Marked is selected in Interrupt Target.")
+        br.ui:createSpinnerWithout(section, "Interrupts At",  0,  0,  95,  5,  "|cffFFBB00Cast Percentage to use at.")
+        br.ui:checkSectionState(section)
+        section = br.ui:createSection(br.ui.window.config, "Interrupt Spells")
+        if br.player ~= nil and br.player.spell ~= nil and br.player.spell.interrupts ~= nil then
+            for _, v in pairs(br.player.spell.interrupts) do
+                local spellName = GetSpellInfo(v)
+                if v ~= 61304 and spellName ~= nil then
+                    br.ui:createCheckbox(section, "Interrupt with " .. spellName, "Interrupt with " .. spellName .. " (ID: " .. v .. ")")
+                end
+            end
+        end
+        br.ui:checkSectionState(section)
+        section = br.ui:createSection(br.ui.window.config, "Personal Whitelist")
+        br.ui:createScrollingEditBox(section,"SpellIDs to Interrupt", nil, "Type spellID. Seperate items with comma (123,321)", 300, 40)
         br.ui:checkSectionState(section)
     end
 
@@ -205,14 +226,18 @@ function br.ui:createConfigWindow()
             [1] = "Other Features",
             [2] = callOtherFeaturesEngine,
         },
-         {
-             [1] = "Save/Load Settings",
-             [2] = callSettingsEngine,
-         },
-         {
+        {
+            [1] = "Save/Load Settings",
+            [2] = callSettingsEngine,
+        },
+        {
             [1] = "Tracker Engine",
             [2] = callTrackerEngine,
         },
+        {
+            [1] = "Interrupt Engine",
+            [2] = callInterruptEngine
+        }
     })
 
     br.ui:checkWindowStatus("config")

@@ -35,7 +35,7 @@ end
 local function eventTracker(self, event, ...)
     local sourceUnit = select(1, ...)
     local spellID = select(3, ...)
-    if sourceUnit == "player" and br.player and not ignoreList[spellID] then
+    if sourceUnit == "player" and br.player then
         if event == "UNIT_SPELLCAST_START" then
             waitForSuccess = spellID
             addSpell(spellID)
@@ -60,4 +60,5 @@ end
 lastCastFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 lastCastFrame:RegisterEvent("UNIT_SPELLCAST_STOP")
 lastCastFrame:RegisterEvent("UNIT_SPELLCAST_START")
+lastCastFrame:RegisterEvent("UNIT_SPELLCAST_SENT")
 lastCastFrame:SetScript("OnEvent", eventTracker)

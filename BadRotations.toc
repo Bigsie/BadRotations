@@ -93,7 +93,8 @@ System\Engines\HealingEngineCollections.lua
 System\Engines\HealingEngineFrame.lua
 System\Engines\HealingEngineFunctions.lua
 #System\Engines\InterruptsFrame.lua -- Unused
-System\Engines\Interrupts.lua 
+System\Engines\InterruptsEngine.lua
+System\Engines\Interrupts.lua
 System\Engines\ttdTable.lua
 System\Engines\QuestTracker.lua
 System\Engines\Tracker.lua

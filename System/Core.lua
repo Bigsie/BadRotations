@@ -91,7 +91,7 @@ function BadRotationsUpdate(self)
 	-- Load and Cycle BR
 	elseif br.unlocked and GetObjectCountBR() ~= nil then
 		-- Check BR Out of Date
-		br:checkBrOutOfDate()		
+		br:checkBrOutOfDate()
 		-- Get Current Addon Name
 		br:setAddonName()
 		-- Load Saved Settings
@@ -179,7 +179,7 @@ function BadRotationsUpdate(self)
 						if UnitIsDeadOrGhost("player") then Print("Player Death Detected! - Queue Cleared.") end 
 						if not UnitAffectingCombat("player") then Print("No Combat Detected! - Queue Cleared.") end
 					end
-				end 
+				end
 				--Smart Queue
 				if br.unlocked and isChecked("Smart Queue") then
 					br.smartQueue()
@@ -203,6 +203,8 @@ function BadRotationsUpdate(self)
 						SetupTables()
 					end
 				end
+				-- Interrupts Engine
+				br.interruptsEngine()
 				-- Auto Loot
 				autoLoot()
 				-- Close windows and swap br.selectedSpec on Spec Change

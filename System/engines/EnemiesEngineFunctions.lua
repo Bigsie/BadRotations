@@ -125,8 +125,10 @@ function getEnemies(thisUnit,radius,checkNoCombat,facing)
 	for k, v in pairs(enemyTable) do
 		thisEnemy = v.unit
 		distance =  getDistance(thisUnit,thisEnemy)
-		if distance < radius and (not facing or getFacing("player",thisEnemy)) then
-			tinsert(enemiesTable,thisEnemy)
+		if distance ~= nil and radius ~= nil and facing ~= nil and thisEnemy ~= nil then
+			if distance < radius and (not facing or getFacing("player",thisEnemy)) then
+				tinsert(enemiesTable,thisEnemy)
+			end
 		end
     end
 	if #enemiesTable == 0 and getDistance("target","player") < radius and isValidUnit("target") and (not facing or getFacing("player","target")) then

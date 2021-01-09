@@ -1179,7 +1179,6 @@ br.lists.spells = {
                 bindingShot                 = 109248, -- This is just an ability for marks (talent for BM/Surv)
                 burstingShot                = 186387,
                 concussiveShot              = 5116,
-                counterShot                 = 147362,
                 killShot                    = 53351,
                 multishot                   = 257620,
                 rapidFire                   = 257044,
@@ -1209,6 +1208,9 @@ br.lists.spells = {
             },
             glyphs                          = {
 
+            },
+            interrupts                      = {
+                counterShot                 = 147362,
             },
             talents                         = {
                 barrage                     = 120360,--
@@ -1320,7 +1322,6 @@ br.lists.spells = {
                 feignDeath                  = 5384,
                 fireworks                   = 127933,
                 flare                       = 1543,
-                freezingTrap                = 187650,
                 huntersMark                 = 257284,
                 killShot                    = 53351,
                 misdirection                = 34477,
@@ -1487,6 +1488,9 @@ br.lists.spells = {
             },
             glyphs                          = {
 
+            },
+            interrupts                      = {
+                freezingTrap                = 187650,
             },
             runeforges                      = {
                 eagletalonsTrueFocus        = 336849,

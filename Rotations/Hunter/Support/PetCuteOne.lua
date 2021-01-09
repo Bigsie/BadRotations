@@ -150,26 +150,26 @@ br.rotations.support["PetCuteOne"] = {
                 and (br.petTarget == "player" or (unit.exists("pettarget") and not unit.isUnit(units.dyn40,br.petTarget)))
             then
                 br.petTarget = units.dyn40
-                if unit.exists(br.petTarget) then ui.debug("[Pet - Target Mode Dynamic] Pet is now targeting - "..unit.name(br.petTarget)) end
+                if unit.exists(br.petTarget) then end -- ui.debug("[Pet - Target Mode Dynamic] Pet is now targeting - "..unit.name(br.petTarget)) end
             end
             -- Target
             if ui.value("Pet Target") == 2 and unit.valid("target")
                 and (br.petTarget == "player" or (unit.exists("pettarget") and not unit.isUnit("target",br.petTarget)))
             then
                 br.petTarget = "target"
-                if unit.exists(br.petTarget) then ui.debug("[Pet - Target Mode Only Target] Pet is now targeting - "..unit.name(br.petTarget)) end
+                if unit.exists(br.petTarget) then end -- ui.debug("[Pet - Target Mode Only Target] Pet is now targeting - "..unit.name(br.petTarget)) end
             end
             -- Any
             if ui.value("Pet Target") == 3 and enemies.yards40[1] ~= nil
                 and (br.petTarget == "player" or (unit.exists("pettarget") and not unit.isUnit(enemies.yards40[1],br.petTarget)))
             then
                 br.petTarget = enemies.yards40[1]
-                if unit.exists(br.petTarget) then ui.debug("[Pet - Target Mode Any Unit] Pet is now targeting - "..unit.name(br.petTarget)) end
+                if unit.exists(br.petTarget) then end -- ui.debug("[Pet - Target Mode Any Unit] Pet is now targeting - "..unit.name(br.petTarget)) end
             end
             -- Assist
             if ui.value("Pet Target") == 4 and (br.petTarget == "player" or (unit.exists("pettarget") and not unit.isUnit("pettarget",br.petTarget))) then
                 br.petTarget = "pettarget"
-                if unit.exists(br.petTarget) then ui.debug("[Pet - Target Mode Assist] Pet is now targeting - "..unit.name(br.petTarget)) end
+                if unit.exists(br.petTarget) then end -- ui.debug("[Pet - Target Mode Assist] Pet is now targeting - "..unit.name(br.petTarget)) end
             end
         end
 

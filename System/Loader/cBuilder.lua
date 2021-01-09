@@ -226,11 +226,14 @@ function br.loader:new(spec,specName)
                         if self.spell.abilities == nil then self.spell.abilities = {} end
                         self.spell.abilities[spellRef] = spellID
                         self.spell[spellRef] = spellID
+                    elseif not IsPassiveSpell(spellID) and spellType == "interrupts" then
+                        if self.spell.interrupts == nil then self.spell.interrupts = {} end
+                        self.spell.interrupts[spellRef] = spellID
                     end
                 end
             end
         end
-        
+
         -- Spell Test
         -- getSpellsTest()
         -- Talent Test
@@ -241,6 +244,10 @@ function br.loader:new(spec,specName)
         getSpells(sharedClassSpells)
         -- Spec Spells - Don't Load on Initial Levels
         if br.lists.spells[playerClass][spec] ~= nil then getSpells(specSpells) end
+        -- Add interrupts to abilities
+        if not isTableEmpty(self.spell.interrupts) then
+            for k,v in pairs(self.spell.interrupts) do self.spell.abilities[k] = v end
+        end
 
         -- Ending the Race War!
         if self.spell.abilities["racial"] == nil then
@@ -413,6 +420,7 @@ function br.loader:new(spec,specName)
                 br.api.buffs(self.buff[k],v)
             end
         end
+
         -- Make Debuff Functions from br.api.debuffs
         for k,v in pairs(self.spell.debuffs) do
             if self.debuff[k] == nil then self.debuff[k] = {} end
@@ -551,7 +559,7 @@ function br.loader:new(spec,specName)
     --------------
 
     function self.update()
-        if spec == GetSpecializationInfo(GetSpecialization()) then 
+        if spec == GetSpecializationInfo(GetSpecialization()) then
             -- Call baseUpdate()
             if not UnitAffectingCombat("player") then self.updateOOC() end
             self.baseUpdate()

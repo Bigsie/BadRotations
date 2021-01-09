@@ -28,8 +28,8 @@ local function createToggles()
     CreateButton("Defensive",3,0)
     -- Interrupt Button
     InterruptModes = {
-        [1] = { mode = "On", value = 1 , overlay = "Interrupts Enabled", tip = "Includes Basic Interrupts.", highlight = 1, icon = br.player.spell.counterShot },
-        [2] = { mode = "Off", value = 2 , overlay = "Interrupts Disabled", tip = "No Interrupts will be used.", highlight = 0, icon = br.player.spell.counterShot }
+        [1] = { mode = "On", value = 1 , overlay = "Interrupts Enabled", tip = "Includes Basic Interrupts.", highlight = 1, icon = br.player.spell.interrupts.counterShot },
+        [2] = { mode = "Off", value = 2 , overlay = "Interrupts Disabled", tip = "No Interrupts will be used.", highlight = 0, icon = br.player.spell.interrupts.counterShot }
     };
     CreateButton("Interrupt",4,0)
     -- MD Button
@@ -128,15 +128,6 @@ local function createOptions()
             br.ui:createSpinner(section, "Feign Death", 30, 0, 100, 5, "|cffFFBB00Health Percentage to use at.")
             -- Tranquilizing Shot
             br.ui:createDropdown(section, "Tranquilizing Shot", {"|cff00FF00Any","|cffFFFF00Target"}, 2,"|cffFFFFFFHow to use Tranquilizing Shot." )
-        br.ui:checkSectionState(section)
-        -- Interrupt Options
-        section = br.ui:createSection(br.ui.window.profile, "Interrupts")
-            -- Counter Shot
-            br.ui:createCheckbox(section,"Counter Shot")
-            -- Freezing Trap
-            br.ui:createCheckbox(section, "Freezing Trap")
-            -- Interrupt Percentage
-            br.ui:createSpinnerWithout(section, "Interrupt At",  0,  0,  95,  5,  "|cffFFFFFFCast Percent to Cast At")
         br.ui:checkSectionState(section)
         -- Toggle Key Options
         section = br.ui:createSection(br.ui.window.profile, "Toggle Keys")
@@ -294,28 +285,6 @@ actionList.Defensive = function()
         end
     end -- End Defensive Toggle
 end -- End Action List - Defensive
-
--- Action List - Interrupts
-actionList.Interrupts = function()
-    if ui.useInterrupt() then
-        for i=1, #enemies.yards40f do
-            local thisUnit = enemies.yards40f[i]
-            local distance = unit.distance(thisUnit)
-            if canInterrupt(thisUnit,ui.value("Interrupt At")) then
-                if distance < 50 then
-                    -- Counter Shot
-                    if ui.checked("Counter Shot") then
-                        if cast.counterShot(thisUnit) then ui.debug("Casting Counter Shot") return true end
-                    end
-					 -- Freezing Trap
-                    if ui.checked("Freezing Trap") then
-                        if cast.freezingTrap(thisUnit,ground) then ui.debug("Casting Freezing Trap") return true end
-                    end
-                end
-            end
-        end
-    end -- End useInterrupts check
-end -- End Action List - Interrupts
 
 -- Action List - Cooldowns
 actionList.Cooldowns = function()
@@ -768,10 +737,6 @@ local function runRotation()
         if unit.inCombat() and var.profileStop == false and unit.valid(units.dyn40) and unit.distance(units.dyn40) < 40
             and not cast.current.barrage() and not cast.current.rapidFire() and not cast.current.aimedShot() and not cast.current.steadyShot()
         then
-            ------------------------------
-            --- In Combat - Interrupts ---
-            ------------------------------
-            if actionList.Interrupts() then return true end
             ------------------------
             --- In Combat - Main ---
             ------------------------
